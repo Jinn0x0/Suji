@@ -1,6 +1,6 @@
 local M = {}
 local HttpService = game:GetService("HttpService")
-loadstring(game:HttpService("https://raw.githubusercontent.com/Jinn0x0/Suji/main/Bin/GetService.lua"))() -- Load all services
+loadstring(HttpService:GetAsync("https://raw.githubusercontent.com/Jinn0x0/Suji/main/Bin/GetService.lua"))() -- Load all services
 
 function M.printPlayersName()
     for _, plr in pairs(Players:GetPlayers()) do
