@@ -1,3 +1,3 @@
-require("Bin/GetService.lua")
+require("Bin/GetService")
 
 print(Players.LocalPlayer)
