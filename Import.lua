@@ -16,6 +16,7 @@ end
 
 local function fetchSource(url)
     if HttpService and HttpService.GetAsync then
+        print("S")
         local ok, result = pcall(HttpService.GetAsync, HttpService, url)
         if ok then
             return result
