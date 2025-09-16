@@ -34,3 +34,4 @@ function loadServices()
         env[service] = game:GetService(service)
     end
 end
+loadServices()
