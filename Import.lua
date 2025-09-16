@@ -22,6 +22,7 @@ local function fetchSource(url)
             return result
         end
     end
+     print("B")
     local ok2, result2 = pcall(function()
         return game:HttpGet(url)
     end)
