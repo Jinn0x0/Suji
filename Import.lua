@@ -14,21 +14,38 @@ local function normalize(name)
     return (name:gsub("%.", "/")) .. ".lua"
 end
 
+local function fetchSource(url)
+    if HttpService and HttpService.GetAsync then
+        local ok, result = pcall(HttpService.GetAsync, HttpService, url)
+        if ok then
+            return result
+        end
+    end
+    local ok2, result2 = pcall(function()
+        return game:HttpGet(url)
+    end)
+    if ok2 then
+        return result2
+    else
+        error(("Import: failed to fetch %s\n%s"):format(url, tostring(result2)))
+    end
+end
+
 local function fetchModule(path)
     local url = baseUrl() .. path
-    local ok, src = pcall(HttpService.GetAsync, HttpService, url)
-    if not ok then
-        error(("Import: failed to fetch %s\n%s"):format(url, tostring(src)))
-    end
+    local src = fetchSource(url)
+
     if type(loadstring) ~= "function" then
-        error("Import: loadstring is not available (check Studio settings).")
+        error("Import: loadstring is disabled. Enable LoadStringEnabled or run in LocalScript.")
     end
+
     local chunk, compileErr = loadstring(src)
     if not chunk then
         error(("Import: compile error for %s\n%s"):format(url, tostring(compileErr)))
     end
-    local okRun, mod = pcall(chunk)
-    if not okRun then
+
+    local ok, mod = pcall(chunk)
+    if not ok then
         error(("Import: run error for %s\n%s"):format(url, tostring(mod)))
     end
     if type(mod) ~= "table" then
