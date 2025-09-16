@@ -1,7 +1,9 @@
 local M = {}
 
 local Players = game:GetService("Players")
+
 print("TestIfGoes")
+
 function M.printPlayersName()
     for _, plr in pairs(Players:GetPlayers()) do
         print(plr.Name)
