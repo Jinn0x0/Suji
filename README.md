@@ -17,8 +17,15 @@ Includes service loaders, player utilities, and more.
 **Load services from GitHub:**
 
 ```lua
-local HttpService = game:GetService("HttpService")
-local url = "https://raw.githubusercontent.com/YourUsername/YourRepo/main/Services.lua"
-local Services = loadstring(HttpService:GetAsync(url))()
+local Owner = "Jinn0x0"
+local Project = "Suji"
 
-print(Services.Players.LocalPlayer)
+local HttpService = game:GetService("HttpService")
+
+local url = ("https://raw.githubusercontent.com/%s/%s/main/%s"):format(Owner,Project,"Import.lua")
+local okSrc, src = pcall(HttpService.GetAsync, HttpService, url)
+local chunk, compileErr = loadstring(src)
+local okRun, Import = pcall(chunk)
+
+local Test = Import.import("Bin.Test")
+Test.run()
