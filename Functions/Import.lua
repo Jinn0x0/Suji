@@ -1,13 +1,12 @@
 local HttpService = game:GetService("HttpService")
 
 local Import = {
-    repo = "Jinn0x0/Suji",  -- <USER>/<REPO>
+    repo = "Jinn0x0/Suji",
     ref  = "main", 
     cache = {},
-    timeout = 10,           -- seconds (optional, GetAsync obeys HttpService settings)
+    timeout = 10,
 }
 
--- Configure once (optional)
 function Import.setup(opts)
     for k,v in pairs(opts or {}) do
         Import[k] = v
@@ -19,7 +18,6 @@ local function baseUrl()
 end
 
 local function normalize(name)
-    -- "pkg.sub.module" -> "pkg/sub/module.lua"
     return (name:gsub("%.", "/")) .. ".lua"
 end
 
@@ -40,7 +38,6 @@ local function fetchModule(path)
     return mod
 end
 
--- Python: import pkg.sub as alias  ->  local alias = Import.import("pkg.sub")
 function Import.import(dottedName)
     local path = normalize(dottedName)
     local cached = Import.cache[path]
@@ -50,8 +47,6 @@ function Import.import(dottedName)
     return mod
 end
 
--- Python: from pkg.sub import a, b  ->  local {a,b} = Import.from("pkg.sub", {"a","b"})
--- (Lua can’t destructure; we return a table you can unpack)
 function Import.from(dottedName, keys)
     local mod = Import.import(dottedName)
     local out = {}
@@ -64,7 +59,6 @@ function Import.from(dottedName, keys)
     return out
 end
 
--- Optional convenience: alias into cache with a different name
 function Import.alias(dottedName, as)
     local mod = Import.import(dottedName)
     Import.cache[normalize(as)] = mod
