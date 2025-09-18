@@ -41,5 +41,9 @@ function MathModule.project(a, b)
     return (a:Dot(b) / b:Dot(b)) * b
 end
 
+function MathModule.GetDirection(a: Position, b: Position): Vector3
+    return (a - b).Unit
+end
+
 
 return MathModule
