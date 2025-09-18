@@ -1,8 +1,8 @@
 local MathModule = {}
 
 -- Object related
-function MathModule.getDistance(object_one, object_two)
-  return (object_one.Position - object_two.Position).Magnitude
+function MathModule.getDistance(obj_one, obj_two)
+  return (obj_one.Position - obj_two.Position).Magnitude
 end
 
 -- Number related
