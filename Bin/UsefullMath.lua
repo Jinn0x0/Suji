@@ -26,8 +26,8 @@ function MathModule.Pow(a: number, b: number): number
 end
 
 -- Object related
-function MathModule.getDistance(obj_one, obj_two)
-  return (obj_one.Position - obj_two.Position).Magnitude
+function MathModule.getDistance(obj_one: Vector3, obj_two: Vector3)
+  return (obj_one - obj_two).Magnitude
 end
 
 -- Number related

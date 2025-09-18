@@ -1,9 +1,3 @@
--- RayVisualizer.lua
--- Luau ModuleScript for Roblox
--- Usage:
---   local RayVisualizer = require(game.ReplicatedStorage.RayVisualizer)
---   RayVisualizer.Visualize(workspace.CurrentCamera.CFrame.Position, workspace.CurrentCamera.CFrame.LookVector * 200)
-
 local TweenService = game:GetService("TweenService")
 
 local RayVisualizer = {}
