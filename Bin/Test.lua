@@ -1,3 +1,5 @@
+--Make sure you have import Bin.GetService required at the top of your script
+
 local M = {}
 
 function M.run()
