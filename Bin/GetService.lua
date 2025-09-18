@@ -34,8 +34,8 @@ function Services.Get()
         "VoiceChatService"
     }
 
-    for _, serviceName in ipairs(serviceNames) do
-        env[serviceName] = game:GetService(serviceName) 
+    for _, a in ipairs(serviceNames) do
+        env[a] = game:GetService(a) 
     end
 end
 
