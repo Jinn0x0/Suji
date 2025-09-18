@@ -71,7 +71,15 @@ function RayVisualizer.Visualize(origin: Vector3, direction: Vector3, opts: Opti
 	if opts.Lifetime and opts.Lifetime > 0 then
 		task.delay(opts.Lifetime, function()
 			if folder.Parent then
-				local tween = TweenService:Create(beam, TweenInfo.new(0.25), {Transparency = NumberSequence.new(1)})
+				-- Tween transparency manually
+				local fade = Instance.new("NumberValue")
+				fade.Value = 0
+				local tween = TweenService:Create(fade, TweenInfo.new(0.25), {Value = 1})
+
+				fade.Changed:Connect(function(val)
+					beam.Transparency = NumberSequence.new(val)
+				end)
+
 				tween:Play()
 				tween.Completed:Wait()
 				folder:Destroy()
