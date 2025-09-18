@@ -21,4 +21,25 @@ function MathModule.sign(num)
   end
 end
 
+function MathModule.vectorLerp(a, b, t)
+    return a + (b - a) * t
+end
+
+function MathModule.angleBetween(a, b)
+    return math.acos(math.clamp(a:Dot(b) / (a.Magnitude * b.Magnitude), -1, 1))
+end
+
+function MathModule.reflect(v, normal)
+    return v - 2 * v:Dot(normal) * normal
+end
+
+function MathModule.midpoint(a, b)
+    return (a + b) / 2
+end
+
+function MathModule.project(a, b)
+    return (a:Dot(b) / b:Dot(b)) * b
+end
+
+
 return MathModule
