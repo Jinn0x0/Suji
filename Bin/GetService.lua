@@ -31,8 +31,12 @@ local serviceNames = {
 }
 
 local Services = {}
-for _, serviceName in ipairs(serviceNames) do
-    Services[serviceName] = game:GetService(serviceName)
+
+function Services.Get()
+    local env = getfenv() 
+    for _, serviceName in ipairs(serviceNames) do
+        env[service] = game:GetService(service) 
+    end
 end
 
 return Services
