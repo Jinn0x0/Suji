@@ -35,7 +35,7 @@ function Services.Get()
     }
 
     for _, serviceName in ipairs(serviceNames) do
-        env[service] = game:GetService(service) 
+        env[serviceName] = game:GetService(serviceName) 
     end
 end
 
