@@ -4,9 +4,9 @@ function M.run()
     print("Hello from Test.lua!")
 end
 
-function M.TestGetNameFromId(userId)
+function M.TestGetNameFromId(Id)
     local success, username = pcall(function()
-        return Players:GetNameFromUserIdAsync(userId)
+        return Players:GetNameFromUserIdAsync(Id)
     end)
 
     if success then
