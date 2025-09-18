@@ -1,3 +1,9 @@
+-- RayVisualizer.lua
+-- Luau ModuleScript for Roblox
+-- Usage:
+--   local RayVisualizer = require(game.ReplicatedStorage.RayVisualizer)
+--   RayVisualizer.Visualize(workspace.CurrentCamera.CFrame.Position, workspace.CurrentCamera.CFrame.LookVector * 200)
+
 local TweenService = game:GetService("TweenService")
 
 local RayVisualizer = {}
@@ -14,6 +20,7 @@ export type Options = {
 	RaycastParams: RaycastParams?
 }
 
+-- helper to make invisible anchor parts
 local function makePart(name: string, parent: Instance): Part
 	local p = Instance.new("Part")
 	p.Name = name
@@ -27,11 +34,12 @@ local function makePart(name: string, parent: Instance): Part
 	return p
 end
 
-function RayVisualizer.Visualize(origin: Vector3, direction: Vector3, opts: Options?)
+--- Visualize a ray between origin and origin+direction
+function RayVisualizer.Visualize(origin: Vector3, direction: Vector3, opts: Options?): (Folder, RaycastResult?)
 	opts = opts or {}
 	local parent = opts.Parent or workspace
 
-	-- Raycast
+	-- Perform raycast
 	local raycastResult = workspace:Raycast(origin, direction, opts.RaycastParams)
 	local hitPos = raycastResult and raycastResult.Position or (origin + direction)
 
@@ -51,7 +59,7 @@ function RayVisualizer.Visualize(origin: Vector3, direction: Vector3, opts: Opti
 	local a1 = Instance.new("Attachment")
 	a1.Parent = p1
 
-	-- Beam
+	-- Beam setup
 	local beam = Instance.new("Beam")
 	beam.Attachment0 = a0
 	beam.Attachment1 = a1
@@ -65,11 +73,10 @@ function RayVisualizer.Visualize(origin: Vector3, direction: Vector3, opts: Opti
 	)
 	beam.Parent = folder
 
-	-- Auto-destroy
+	-- Auto-destroy (with fade out)
 	if opts.Lifetime and opts.Lifetime > 0 then
 		task.delay(opts.Lifetime, function()
 			if folder.Parent then
-				-- fade out
 				local tween = TweenService:Create(beam, TweenInfo.new(0.25), {Transparency = NumberSequence.new(1)})
 				tween:Play()
 				tween.Completed:Wait()
