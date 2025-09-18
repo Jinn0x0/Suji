@@ -7,7 +7,7 @@ local Import = {
 }
 
 local function baseUrl()
-    return ("https://raw.githubusercontent.com/%s/%s/"):format(Import.repo, Import.ref)
+    return ("https://raw.githubusercontent.com/%s/refs/heads/%s/"):format(Import.repo, Import.ref)
 end
 
 local function normalize(name)
