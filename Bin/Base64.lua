@@ -127,7 +127,6 @@ function Base64.decode(b64: string, alphabet: string?): string
 	return table.concat(out)
 end
 
---- XOR a string with a key
 function Base64.xorWithKey(input: string, key: string): string
 	local out = table.create(#input)
 	local klen = #key
