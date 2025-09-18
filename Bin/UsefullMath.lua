@@ -1,5 +1,30 @@
 local MathModule = {}
 
+-- Arithmetic
+function MathModule.Add(a: number, b: number): number
+  return a + b
+end
+
+function MathModule.Sub(a: number, b: number): number
+  return a - b
+end
+
+function MathModule.Mul(a: number, b: number): number
+  return a * b
+end
+
+function MathModule.Div(a: number, b: number): number
+  return a / b
+end
+
+function MathModule.Mod(a: number, b: number): number
+  return a % b
+end
+
+function MathModule.Pow(a: number, b: number): number
+  return a ^ b
+end
+
 -- Object related
 function MathModule.getDistance(obj_one, obj_two)
   return (obj_one.Position - obj_two.Position).Magnitude
