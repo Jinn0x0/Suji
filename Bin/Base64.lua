@@ -27,7 +27,7 @@ local function makeReverseMap(alphabet: string)
     return rev
 end
 
---- Encode to Base64
+--- Encode
 function Base64.encode(input: string, alphabet: string?): string
     alphabet = alphabet or Base64.STANDARD_ALPHABET
     validateAlphabet(alphabet)
@@ -70,7 +70,7 @@ function Base64.encode(input: string, alphabet: string?): string
     return table.concat(out)
 end
 
---- Decode from Base64
+--- Decode
 function Base64.decode(b64: string, alphabet: string?): string
     alphabet = alphabet or Base64.STANDARD_ALPHABET
     validateAlphabet(alphabet)
