@@ -49,6 +49,7 @@ local function fetchModule(path)
         error(("Import: run error for %s\n%s"):format(url, tostring(mod)))
     end
     if type(mod) ~= "table" and type(mod) ~= "function" then
+        print("A")
         error(("Import: module %s must return a table or function"):format(path))
     end
     return mod
