@@ -9,7 +9,7 @@ local Import = {
 local function baseUrl()
     return ("https://raw.githubusercontent.com/%s/refs/heads/%s/"):format(Import.repo, Import.ref)
 end
-
+-- Test
 local function normalize(name)
     return (name:gsub("%.", "/")) .. ".lua"
 end
