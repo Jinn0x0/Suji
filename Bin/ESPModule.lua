@@ -227,3 +227,153 @@ end)
 -- Render ESP movement
 RunService.RenderStepped:Connect(ESPModule.UpdateESP)
 ]]
+
+-- ====================================================================================
+
+-- Copilot Version :V (It look nice idk how it work thou, I know but I dont know how to make that)
+--[[
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local ESPModule = {}
+
+ESPModule.Enums = {
+    GUI = "GUI",
+    DRAWING = "DRAWING",
+}
+
+-- Default style
+ESPModule.DefaultStyle = {
+    Color = Color3.fromRGB(255, 0, 0),
+    Thickness = 2,
+    Filled = false,
+    InterpolateColor = false,
+    InterpolateTime = 5,
+    Transparency = 0.5,
+}
+
+ESPModule.Targets = {} -- [Instance] = ESPObject
+
+-- ESPObject class
+local ESPObject = {}
+ESPObject.__index = ESPObject
+
+function ESPObject.new(target, type, style)
+    local self = setmetatable({}, ESPObject)
+    self.Target = target
+    self.Type = type
+    self.Style = style or ESPModule.DefaultStyle
+    self.Visual = self:CreateVisual()
+    return self
+end
+
+function ESPObject:CreateVisual()
+    if self.Type == ESPModule.Enums.DRAWING then
+        local box = Drawing.new("Square")
+        box.Color = self.Style.Color
+        box.Thickness = self.Style.Thickness
+        box.Filled = self.Style.Filled
+        box.Visible = false
+        return box
+    end
+end
+
+function ESPObject:Update()
+    local topLeft, bottomRight = ESPModule.GetBounds(self.Target)
+    if not topLeft or not bottomRight then
+        self.Visual.Visible = false
+        return
+    end
+
+    local size = bottomRight - topLeft
+    self.Visual.Position = topLeft
+    self.Visual.Size = size
+    self.Visual.Visible = true
+
+    if self.Style.InterpolateColor then
+        local hue = (tick() % self.Style.InterpolateTime) / self.Style.InterpolateTime
+        self.Visual.Color = Color3.fromHSV(hue, 1, 1)
+    end
+end
+
+function ESPObject:Destroy()
+    if self.Visual and self.Visual.Remove then
+        self.Visual:Remove()
+    end
+end
+
+-- Bounding box utility
+function ESPModule.GetBounds(object)
+    local camera = workspace.CurrentCamera
+    if not camera or not object or not object.Parent then return end
+
+    local cf, size
+    if object:IsA("Model") then
+        cf, size = object:GetBoundingBox()
+    elseif object:IsA("BasePart") then
+        cf = object.CFrame
+        size = object.Size
+    else
+        return
+    end
+
+    local half = size / 2
+    local corners = {
+        cf.Position + cf:VectorToWorldSpace(Vector3.new(-half.X, -half.Y, -half.Z)),
+        cf.Position + cf:VectorToWorldSpace(Vector3.new(half.X, half.Y, half.Z)),
+    }
+
+    local screenPoints = {}
+    for _, pos in ipairs(corners) do
+        local screen, onScreen = camera:WorldToViewportPoint(pos)
+        if not onScreen then return end
+        table.insert(screenPoints, screen)
+    end
+
+    local minX = math.min(screenPoints[1].X, screenPoints[2].X)
+    local minY = math.min(screenPoints[1].Y, screenPoints[2].Y)
+    local maxX = math.max(screenPoints[1].X, screenPoints[2].X)
+    local maxY = math.max(screenPoints[1].Y, screenPoints[2].Y)
+
+    return Vector2.new(minX, minY), Vector2.new(maxX, maxY)
+end
+
+-- Public API
+function ESPModule.TrackTarget(target, type, style)
+    if ESPModule.Targets[target] then return end
+    ESPModule.Targets[target] = ESPObject.new(target, type, style)
+end
+
+function ESPModule.UntrackTarget(target)
+    local obj = ESPModule.Targets[target]
+    if obj then
+        obj:Destroy()
+        ESPModule.Targets[target] = nil
+    end
+end
+
+function ESPModule.TrackPlayer(player, style)
+    local function onCharacter(char)
+        ESPModule.TrackTarget(char, ESPModule.Enums.DRAWING, style)
+    end
+
+    player.CharacterAdded:Connect(onCharacter)
+    if player.Character then onCharacter(player.Character) end
+
+    player.CharacterRemoving:Connect(function(char)
+        ESPModule.UntrackTarget(char)
+    end)
+end
+
+function ESPModule.UpdateAll()
+    for _, obj in pairs(ESPModule.Targets) do
+        obj:Update()
+    end
+end
+
+RunService.RenderStepped:Connect(ESPModule.UpdateAll)
+
+return ESPModule
+
+
+]]
