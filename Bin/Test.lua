@@ -1,12 +1,12 @@
---Make sure you have import Bin.GetService required at the top of your script
+-- Make sure you have import Bin.GetService required at the top of your script
 
-local M = {}
+local TestModule = {}
 
-function M.run()
-    print("Hello from Test.lua!")
+function TestModule.run()
+    print("Suji Script Running")
 end
 
-function M.TestGetNameFromId(Id)
+function TestModule.TestGetNameFromId(Id)
     local success, username = pcall(function()
         return Players:GetNameFromUserIdAsync(Id)
     end)
@@ -19,4 +19,4 @@ function M.TestGetNameFromId(Id)
 end
 
 
-return M
+return TestModule
