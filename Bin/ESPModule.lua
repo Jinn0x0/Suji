@@ -176,12 +176,24 @@ return ESPModule
 --[[
 -- IMPORT ALL SERVICES BEFORE
 local LocalPlayer = Players.LocalPlayer
-local ESPModule = -- LOCATION
+
+-- Load ESP module
+local ESPModule = -- GET ESP
+
+-- Define a custom style for character ESP
+local CharacterESPStyle = {
+    Color = Color3.fromRGB(0, 255, 0),
+    Thickness = 2,
+    Filled = false,
+    InterpolateColor = true,
+    InterpolateTime = 4,
+    Transparency = 0.3,
+}
 
 -- Make ESP for character
 local function setupCharacterESP(character)
     if not character then return end
-    ESPModule.CreateESP(character, ESPModule.Enums.DRAWING)
+    ESPModule.CreateESP(character, ESPModule.Enums.DRAWING, CharacterESPStyle)
 end
 
 -- Logic for each player
