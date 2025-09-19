@@ -1,9 +1,11 @@
-function Tween(obj, props, time)
+local TweenModule = {}
+
+function TweenModule.Tween(obj, props, time)
     local tween = TweenService:Create(obj, time, props)
     tween:Play()
 end
 
-
+return TweenModule
 --[[
 
 Quick Tween:
