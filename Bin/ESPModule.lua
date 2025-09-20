@@ -22,6 +22,8 @@ local function GetBounds(character)
 
     -- Calculate Bounds Size
 	local height = feetScreenPosition.Y - headScreenPosition.Y
+    if height <= 0 then return end 
+    
 	local width = height / 2
 
     -- Calculate Bounds Position
@@ -100,7 +102,7 @@ function ESPModule:Add(target, customStyle)
     if customStyle then style = customStyle
     else style = ESPModule.DefaultStyle end
 
-    local newESP = ESPBox.new(targte, style)
+    local newESP = ESPBox.new(target, style)
     self.ActiveESPs[target] = newESP
 end
 
