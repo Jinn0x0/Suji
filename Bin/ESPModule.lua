@@ -23,7 +23,7 @@ local function GetBounds(character)
     -- Calculate Bounds Size
 	local height = feetScreenPosition.Y - headScreenPosition.Y
     if height <= 0 then return end 
-    
+
 	local width = height / 2
 
     -- Calculate Bounds Position
@@ -117,7 +117,7 @@ end
 
 -- Update all active ESPs
 function ESPModule:UpdateAll()
-    for target, ESP, in pairs(self.ActiveESPs) do
+    for target, ESP in pairs(self.ActiveESPs) do
         local result = ESP:Update()
         if not result then
             self.ActiveESPs[target] = nil
