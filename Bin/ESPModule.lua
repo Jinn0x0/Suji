@@ -11,8 +11,8 @@ local function GetBounds(character)
 	if not camera then return end
 
     -- World Positions
-	local headPosition = Head.Position + Vector3.new(0, Head.Size.Y / 2, 0)
-	local feetPosition = HRP.Position - Vector3.new(0, HRP.Size.Y, 0)
+	local headPosition = Head.Position + Vector3.new(0, Head.Size.Y * 1.25, 0)
+	local feetPosition = HRP.Position - Vector3.new(0, HRP.Size.Y * 1.5, 0)
 
     -- Viewport from positions
 	local headScreenPosition, headVisible = camera:WorldToViewportPoint(headPosition)
