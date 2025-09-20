@@ -84,10 +84,10 @@ end
 
 -- ESP Toggle
 function ESPBox:Toggle(state)
-    if state then
-        self.isVisible = state
-    else
+    if state == nil then
         self.isVisible = not self.isVisible
+    else
+        self.isVisible = state
     end
     self.Drawing.Visible = self.isVisible
 end
@@ -129,10 +129,25 @@ function ESPModule:Remove(target)
     end
 end
 
--- Toggle ESP for players
+-- Remove ESP from players
+function ESPModule:RemoveAll()
+    for target, ESP in pairs(self.ActiveESPs) do
+        ESP:Destroy()
+        self.ActiveESPs[target] = nil
+    end
+end
+
+-- Toggle ESP for player
 function ESPModule:Toggle(target, state)
     local ESP = self.ActiveESPs[target]
     if ESP then
+        ESP:Toggle(state)
+    end
+end
+
+-- Toggle ESP for players
+function ESPModule:ToggleAll(state)
+    for target, ESP in pairs(self.ActiveESPs) do
         ESP:Toggle(state)
     end
 end
