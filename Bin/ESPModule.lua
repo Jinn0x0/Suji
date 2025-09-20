@@ -43,12 +43,13 @@ function ESPBox.new(target, style)
 
     self.Target = target
     self.Drawing = Drawing.new("Square")
+    self.isVisible = false
 
     self.Drawing.Color = style.Color
 	self.Drawing.Thickness = style.Thickness
 	self.Drawing.Filled = style.Filled
 	self.Drawing.Transparency = style.Transparency
-	self.Drawing.Visible = false
+	self.Drawing.Visible = self.isVisible
 
     return self
 end
@@ -62,7 +63,7 @@ function ESPBox:Update()
 
     local position, size = GetBounds(self.Target)
 
-    if position and size then
+    if position and size and self.isVisible then
         self.Drawing.Visible = true
         self.Drawing.Position = position
         self.Drawing.Size = size
@@ -79,6 +80,16 @@ function ESPBox:Destroy()
         self.Drawing = nil
     end
     self.Target = nil
+end
+
+-- ESP Toggle
+function ESPBox:Toggle(state)
+    if state then
+        self.isVisible = state
+    else
+        self.isVisible = not self.isVisible
+    end
+    self.Drawing.Visible = self.isVisible
 end
 
 -- Main Library
@@ -98,9 +109,12 @@ function ESPModule:Add(target, customStyle)
     if not target then return end
     if self.ActiveESPs[target] then return end
 
-    local style = nil
-    if customStyle then style = customStyle
-    else style = ESPModule.DefaultStyle end
+    local style = table.clone(ESPModule.DefaultStyle)
+    if customStyle then
+        for key, value in pairs(customStyle) do
+            style[key] = value
+        end
+    end
 
     local newESP = ESPBox.new(target, style)
     self.ActiveESPs[target] = newESP
@@ -112,6 +126,14 @@ function ESPModule:Remove(target)
     if ESP then
         ESP:Destroy()
         self.ActiveESPs[target] = nil
+    end
+end
+
+-- Toggle ESP for players
+function ESPModule:Toggle(target, state)
+    local ESP = self.ActiveESPs[target]
+    if ESP then
+        ESP:Toggle(state)
     end
 end
 
